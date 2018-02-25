@@ -1,0 +1,91 @@
+{% extends "global/BaseCSR.html" %}
+{% load staticfiles otree_tags %}
+{% load mathfilters %}
+
+{% block title %}
+    Quiz 1
+{% endblock %}
+
+{% block content %}
+
+    <p class="text-success">
+    </p>
+        <div class="panel-heading">
+                <h3>Please answer the following questions. See full instructions below for solutions.</h3>
+        </div>
+
+        <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border:none;margin:0px auto;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:5px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:5px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        </style>
+
+        <table class="tg">
+        {% for field in form %}
+                <tr>
+                    <th width="50%" style="vertical-align:middle; text-align: right; font-size:100%">
+                      <br> <h3>{{field.label}}:</h3>
+                    </th>
+                <th  width="50%" style="vertical-align:middle;align: center;">
+                     <br> <br>       {{field}} 
+                    <font color="red">{{ field.errors }} </font> 
+                    </th>
+                </tr>
+                {% endfor %}
+            </table>
+
+    <p>
+        <br><br>
+        Full Instructions <a href="#" id="hide">Hide</a> - <a href="#" id="show">Show</a>
+    </p>
+
+    {% next_button %}<br><br><br>
+
+    <div id='instrucs' style="display:none"> {% include Constants.instructions_template %} </div>
+
+
+    {% if debug %}
+
+        <div class="box" style="background-color: #e4ffdd">
+
+            <h4><br>Cheater Mode Activated (Debug Mode Only)</h4>
+            <p>
+                q1: {{player.GE_Low_F}} <br>
+                q2: {{player.GE_Low_A}} <br>
+                q3: {{session.config.GE_Low_A|add:session.config.GE_Low_F|add:40|mul:session.config.mpcr|add:20|sub:session.config.GE_Low_A}} <br>
+                q4: {{session.config.GE_Low_A|add:session.config.GE_Low_F|add:40|mul:session.config.mpcr|add:20|sub:session.config.GE_Low_F}} <br>
+
+            {% with F_GE=session.config.GE_Low_F|mul:session.config.F1_F_mult %}
+            {% with GE=session.config.GE_Low_A|add:F_GE|add:40 %}
+            {% with F_IE=20|sub:F_GE%}
+                q5: {{session.config.mpcr|mul:GE|add:20|sub:session.config.GE_Low_A }} <br>
+                q6: {{session.config.mpcr|mul:GE|add:F_IE}} <br>
+            {% endwith %}            {% endwith %}            {% endwith %}
+
+            </p>
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+    <!-- Force cursor to user_total form field -->
+    <script type="text/javascript">
+    document.getElementById('id_quiz_01').focus()
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#hide").click(function(){
+            $("#instrucs").hide();
+        });
+        $("#show").click(function(){
+            $("#instrucs").show();
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,444 @@
+{% load otree_tags staticfiles %}
+{% load mathfilters %}
+
+
+<p style="color:#f7f7fc;">Role: {{participant.vars.Role}} | GE_Low_A: {{session.config.GE_Low_A}} | GE_Low_F: {{session.config.GE_Low_F}} | F1_F_mult: {{session.config.F1_F_mult}}  | N1_prob: {{session.config.N1_prob}} | boycott_cost: {{session.config.boycott_cost}}</p>
+
+    <div class="instructions well well-lg">
+
+        <p>
+            You are about to start <b>Part 3</b> of the study. 
+        </p>
+        <hr>
+        <p>
+            You have been assigned to be a <b><font color="red">Role A</font></b> participant.
+        </p>
+        <p>
+            Every Role A participant has been <b>paired </b>with a <font color="blue"><b>Role F</b></font> participant. The Role F player is an automated player programmed to make contributions that correspond to those made by real players in a previous, comparable experiment. You will have the same partner and you will <b>keep the same role</b> throughout the rest of the study. 
+        </p>
+        <hr>
+
+
+        <h3>Stages</h2>
+
+        <p>
+            There are four stages.
+        </p>
+
+        <ul>
+            <li><p><font color="red">RED</font> moves are taken by the <font color='red'>Role A</font> participant, 
+            <li><p><font color="blue">BLUE</font> moves are taken by <font color='blue'>Role F</font> participant and 
+            <li><p><font color="green">GREEN</font> moves are taken by <font color="green">Nature</font>, through randomization.
+        </ul>
+        <center><img src="/static/img/stage1.png"/ height="300" align="center"></center>
+        <br><br><hr><hr>
+
+
+
+
+        <h3>Stage 1 - <font color='red'>Player A</font> Chooses</h2>
+
+        <p>
+            Scores are calculated similar to that of rounds in Part 2, but with fixed amounts to be distributed to the Group or Individual exchange.  
+        </p>
+
+
+
+        <h4>Example:</h4>
+        <ul>
+            <li><p><b><font color="red">Role A</font></b> has 20 points, and starts off placing {{session.config.GE_Low_A}} points into the Group Exchange and 5 into the Individual Exchange. 
+            <li><p><b><font color="blue">Role F</font></b> has 20 points, and starts off placing {{session.config.GE_Low_F}} points into the Group Exchange and 15 into the Individual Exchange. 
+        </ul>
+        <p>
+            Scores awarded to each player in the example are listed below. 
+        </p>
+
+        <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border:none;margin:0px auto;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg .tg-cwv5{background-color:#ffffff;text-align:right;vertical-align:top}
+        .tg .tg-5jn8{font-weight:bold;font-size:large;vertical-align:top}
+        .tg .tg-uj5g{background-color:#e7e5e5;text-align:center;vertical-align:top}
+        .tg .tg-cfx1{background-color:#e7e5e5;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-3gle{font-weight:bold;background-color:#f4e8e8;color:#fe0000;text-align:center;vertical-align:top}
+        .tg .tg-27w5{font-weight:bold;background-color:#e1e5f2;color:#3166ff;text-align:center;vertical-align:top}
+        .tg .tg-km61{background-color:#eeeeee;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-2idc{text-decoration:underline;background-color:#ffffff;text-align:center;vertical-align:top}
+        .tg .tg-8nce{background-color:#f4e8e8;text-align:center;vertical-align:top}
+        .tg .tg-8nce2{background-color:#f0c0c0;text-align:center;vertical-align:top}
+        .tg .tg-42ua{background-color:#e1e5f2;text-align:center;vertical-align:top}
+        .tg .tg-42ua2{background-color:#bfc9ec;text-align:center;vertical-align:top}
+        .tg .tg-549m{background-color:#eeeeee;text-align:center;vertical-align:top}
+        .tg .tg-i81m{background-color:#ffffff;text-align:center;vertical-align:top}
+        </style>
+        <table class="tg">
+          <tr>
+            <th class="tg-5jn8" colspan="6">Example Scores with A1 Selected</th>
+          </tr>
+          <tr>
+            {% with F_GE=session.config.GE_Low_F %}
+            {% with GE=session.config.GE_Low_A|add:F_GE %}
+            {% with F_IE=20|sub:F_GE%}
+            <td class="tg-cwv5"></td>
+            <td class="tg-3gle">Role A</td>
+            <td class="tg-27w5">Role F</td>
+            <td class="tg-2idc">Total</td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Group Exchange Contribution:</td>
+            <td class="tg-8nce">{{session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{session.config.GE_Low_F}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Individual Exchange Contribution:</td>
+            <td class="tg-8nce">{{20|sub:session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{20|sub:session.config.GE_Low_F}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Score:</td>
+            {% if Role_self == 'A' %}<td class="tg-8nce2">{% else %}<td class="tg-8nce">{% endif %}
+            {{session.config.GE_Low_A|add:session.config.GE_Low_F|mul:session.config.mpcr|add:20|sub:session.config.GE_Low_A}}</td>
+            {% if Role_self == 'F' %}<td class="tg-42ua2">{% else %}<td class="tg-42ua">{% endif %}
+            {{session.config.GE_Low_A|add:session.config.GE_Low_F|mul:session.config.mpcr|add:20|sub:session.config.GE_Low_F}}</td>
+            <td class="tg-i81m">{{session.config.GE_Low_A|add:session.config.GE_Low_F|mul:session.config.mpcr|add:20|mul:2|sub:session.config.GE_Low_A|sub:session.config.GE_Low_F}}</td>
+            {% endwith %}{% endwith %}{% endwith %}
+          </tr>
+        </table>
+
+
+        <hr>
+        <p>
+            The Role A participant will make the first decision. He or she will choose between A1 and A2.
+        <ul>
+            <li><p><b>A1</b> means the round ends and both participants receive the example scores listed above.</p></li>
+
+            <li><p><b>A2</b> means Role F will be asked to increase their Group Exchange contribution in Stage 2. 
+        </ul>
+
+        <br><br><hr>
+        <hr>
+
+
+
+
+
+        <h3>Stage 2 - <font color='blue'>Player F</font> Chooses</h3>
+
+        <center><img src="/static/img/stage2.png"/ height="300" align="center"></center>
+        <p>
+        If the Role A participant chooses A2, then the Role F participant will be asked to make the following decision:
+        <ul>
+            <li><p><b>F1</b> means the games ends with Role F increasing their Group Exchange contribution by {{session.config.F1_F_mult}} times their initial score. Role A will contribute to the Group Exchange by the same amount as their initial scores, producing the scores below. 
+
+            <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border:none;margin:0px auto;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg .tg-cwv5{background-color:#ffffff;text-align:right;vertical-align:top}
+        .tg .tg-5jn8{font-weight:bold;font-size:large;vertical-align:top}
+        .tg .tg-uj5g{background-color:#e7e5e5;text-align:center;vertical-align:top}
+        .tg .tg-cfx1{background-color:#e7e5e5;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-3gle{font-weight:bold;background-color:#f4e8e8;color:#fe0000;text-align:center;vertical-align:top}
+        .tg .tg-27w5{font-weight:bold;background-color:#e1e5f2;color:#3166ff;text-align:center;vertical-align:top}
+        .tg .tg-km61{background-color:#eeeeee;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-2idc{text-decoration:underline;background-color:#ffffff;text-align:center;vertical-align:top}
+        .tg .tg-8nce{background-color:#f4e8e8;text-align:center;vertical-align:top}
+        .tg .tg-42ua{background-color:#e1e5f2;text-align:center;vertical-align:top}
+        .tg .tg-549m{background-color:#eeeeee;text-align:center;vertical-align:top}
+        .tg .tg-i81m{background-color:#ffffff;text-align:center;vertical-align:top}
+        </style>
+        <table class="tg">
+          <tr>
+            <th class="tg-5jn8" colspan="6">Scores with F1 Selected</th>
+          </tr>
+          <tr>
+            <td class="tg-cwv5"></td>
+            <td class="tg-3gle">Role A</td>
+            <td class="tg-27w5">Role F</td>
+            <td class="tg-2idc">Total</td>
+          </tr>
+          <tr>
+          {% with F_GE=session.config.GE_Low_F|mul:session.config.F1_F_mult %}
+          {% with GE=session.config.GE_Low_A|add:F_GE %}
+          {% with F_IE=20|sub:F_GE%}
+
+            <td class="tg-cwv5">Group Exchange Contribution:</td>
+            <td class="tg-8nce">{{session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{session.config.GE_Low_F|mul:3}}</td>
+            <td class="tg-i81m">
+            </td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Individual Exchange Contribution:</td>
+            <td class="tg-8nce">{{20|sub:session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">
+                {{20|sub:F_GE|floatformat:"0"}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Score:</td>
+            {% if Role_self == 'A' %}<td class="tg-8nce2">{% else %}<td class="tg-8nce">{% endif %}
+            {{session.config.GE_Low_F|mul:3|add:session.config.GE_Low_A|mul:0.3|sub:session.config.GE_Low_A|sub:-20}}
+            </td>
+            {% if Role_self == 'F' %}<td class="tg-42ua2">{% else %}<td class="tg-42ua">{% endif %}
+            {{session.config.GE_Low_F|mul:3|add:session.config.GE_Low_A|mul:0.3|sub:F_GE|sub:-20}}</td>
+            {% endwith %}            {% endwith %}            {% endwith %}
+            <td class="tg-i81m">{{session.config.GE_Low_F|mul:3|add:session.config.GE_Low_A|mul:0.3|mul:2|sub:session.config.GE_Low_A|sub:session.config.GE_Low_F|sub:-30|floatformat:"0"}}</td> <!-- Hacked low_F/3 -->
+          </tr>
+        </table> 
+        <br><br>
+
+            <li><p><b>F2</b> means Role F does not choose to increase their initial Group Exchange contribution. The Role A participant will then be asked to make another decision in Stage 3.
+        </ul>
+        <br>
+        <br>
+        <br>
+        <hr>
+        <hr>
+
+
+
+
+
+
+
+
+        <h3>Stage 3 - <font color='red'>Player A</font> Chooses </h3>
+        <p>
+            If the Role F participant chooses F2, the Role A participant chooses between A3 and A4:
+        </p>
+        <center><img src="/static/img/stage3.png"/ height="300" align="center"></center><br><br>
+
+        <ul>
+        <li>
+            <p>If the Role A participant chooses <b>A3</b>, the round ends and both participants receive the amount they would have earned if they contributed to the group account equal to the average amount they contributed in Part 2.</p></li>
+            </ul>
+        
+
+        <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border:none;margin:0px auto;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg .tg-cwv5{background-color:#ffffff;text-align:right;vertical-align:top}
+        .tg .tg-5jn8{font-weight:bold;font-size:large;vertical-align:top}
+        .tg .tg-uj5g{background-color:#e7e5e5;text-align:center;vertical-align:top}
+        .tg .tg-cfx1{background-color:#e7e5e5;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-3gle{font-weight:bold;background-color:#f4e8e8;color:#fe0000;text-align:center;vertical-align:top}
+        .tg .tg-27w5{font-weight:bold;background-color:#e1e5f2;color:#3166ff;text-align:center;vertical-align:top}
+        .tg .tg-km61{background-color:#eeeeee;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-2idc{text-decoration:underline;background-color:#ffffff;text-align:center;vertical-align:top}
+        .tg .tg-8nce{background-color:#f4e8e8;text-align:center;vertical-align:top}
+        .tg .tg-42ua{background-color:#e1e5f2;text-align:center;vertical-align:top}
+        .tg .tg-549m{background-color:#eeeeee;text-align:center;vertical-align:top}
+        .tg .tg-i81m{background-color:#ffffff;text-align:center;vertical-align:top}
+        </style>
+        <table class="tg">
+          <tr>
+            <th class="tg-5jn8" colspan="6">Scores with A3 Selected (same as the initial scores)</th>
+          </tr>
+          <tr>
+            {% with F_GE=session.config.GE_Low_F %}
+            {% with GE=session.config.GE_Low_A|add:F_GE %}
+            {% with F_IE=20|sub:F_GE%}
+            <td class="tg-cwv5"></td>
+            <td class="tg-3gle">Role A</td>
+            <td class="tg-27w5">Role F</td>
+            <td class="tg-2idc">Total</td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Group Exchange Contribution:</td>
+            <td class="tg-8nce">{{session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{session.config.GE_Low_F}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Individual Exchange Contribution:</td>
+            <td class="tg-8nce">{{20|sub:session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{20|sub:session.config.GE_Low_F}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Score:</td>
+            {% if Role_self == 'A' %}<td class="tg-8nce2">{% else %}<td class="tg-8nce">{% endif %}
+            {{session.config.GE_Low_A|add:session.config.GE_Low_F|mul:session.config.mpcr|add:20|sub:session.config.GE_Low_A}}</td>
+            {% if Role_self == 'F' %}<td class="tg-42ua2">{% else %}<td class="tg-42ua">{% endif %}
+            {{session.config.GE_Low_A|add:session.config.GE_Low_F|mul:session.config.mpcr|add:20|sub:session.config.GE_Low_F}}</td>
+            <td class="tg-i81m">{{session.config.GE_Low_A|add:session.config.GE_Low_F|mul:session.config.mpcr|add:20|mul:2|sub:session.config.GE_Low_A|sub:session.config.GE_Low_F}}</td>
+            {% endwith %}{% endwith %}{% endwith %}
+          </tr>
+        </table>
+        <br><br>
+
+
+
+
+
+
+
+        <hr>
+        <h3>Stage 4 - <font color='green'>Random Event</font>  </h3>
+
+
+
+        <p>If the Role A participant chooses <b>A4</b> in Stage 3, then both player's scores will be randomly selected by the computer. <strong><u>In either outcome the <font color='red'>Role A</font> player will have to pay a fee of {{ session.config.boycott_cost }}</strong></u>
+            <ul>
+                <li><p><b>N1</b>: <b><u>With probability {{ session.config.N1_prob }}</u></b> the Role F participant will contribute {{session.config.F1_F_mult}} times his or her original contribution to the Group Exchange, the amount they would have contributed had Player F chosen F1 in Stage 2.
+
+            <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border:none;margin:0px auto;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg .tg-cwv5{background-color:#ffffff;text-align:right;vertical-align:top}
+        .tg .tg-5jn8{font-weight:bold;font-size:large;vertical-align:top}
+        .tg .tg-uj5g{background-color:#e7e5e5;text-align:center;vertical-align:top}
+        .tg .tg-cfx1{background-color:#e7e5e5;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-3gle{font-weight:bold;background-color:#f4e8e8;color:#fe0000;text-align:center;vertical-align:top}
+        .tg .tg-27w5{font-weight:bold;background-color:#e1e5f2;color:#3166ff;text-align:center;vertical-align:top}
+        .tg .tg-km61{background-color:#eeeeee;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-2idc{text-decoration:underline;background-color:#ffffff;text-align:center;vertical-align:top}
+        .tg .tg-8nce{background-color:#f4e8e8;text-align:center;vertical-align:top}
+        .tg .tg-42ua{background-color:#e1e5f2;text-align:center;vertical-align:top}
+        .tg .tg-549m{background-color:#eeeeee;text-align:center;vertical-align:top}
+        .tg .tg-i81m{background-color:#ffffff;text-align:center;vertical-align:top}
+        </style>
+        <table class="tg">
+          <tr>
+            <th class="tg-5jn8" colspan="6">Scores with N1 - <u>Probability {{ session.config.N1_prob }}</u></th>
+          </tr>
+          <tr>
+            <td class="tg-cwv5"></td>
+            <td class="tg-3gle">Role A</td>
+            <td class="tg-27w5">Role F</td>
+            <td class="tg-2idc">Total</td>
+          </tr>
+          <tr>
+          {% with F_GE=session.config.GE_Low_F|mul:session.config.F1_F_mult %}
+          {% with GE=session.config.GE_Low_A|add:F_GE %}
+          {% with F_IE=20|sub:F_GE%}
+
+            <td class="tg-cwv5">Group Exchange Contribution:</td>
+            <td class="tg-8nce">{{session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{session.config.GE_Low_F|mul:3}}</td>
+            <td class="tg-i81m">
+            </td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Individual Exchange Contribution:</td>
+            <td class="tg-8nce">{{20|sub:session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">
+                {{F_IE|floatformat:"0"}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Fee:</td>
+            <td class="tg-8nce">- {{ session.config.boycott_cost }}</td>
+            <td class="tg-42ua">
+                0</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Score:</td>
+            {% if Role_self == 'A' %}<td class="tg-8nce2">{% else %}<td class="tg-8nce">{% endif %}
+            {{session.config.GE_Low_F|mul:3|add:session.config.GE_Low_A|mul:0.3|sub:-20|sub:session.config.GE_Low_A|sub:10}}
+            </td>
+            {% if Role_self == 'F' %}<td class="tg-42ua2">{% else %}<td class="tg-42ua">{% endif %}
+            {{session.config.GE_Low_F|mul:3|add:session.config.GE_Low_A|mul:0.3|sub:-20|sub:10|sub:session.config.GE_Low_F}}</td><!-- Hacked to accommodate nonneg -->
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+            <td class="tg-i81m">{{session.config.GE_Low_F|mul:3|add:session.config.GE_Low_A|mul:0.3|mul:2|sub:-40|sub:10|sub:session.config.GE_Low_F|sub:session.config.GE_Low_A|sub:10|floatformat:"0"}}</td><!-- Hacked -->>
+          </tr>
+        </table> 
+        <br><br>
+
+
+                <li><p><b>N2</b>: With probability {{ 1|sub:session.config.N1_prob }}, the Role F participant will contribute the same amount that he or she contributed in the initial example.
+
+        <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;border:none;margin:0px auto;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;}
+        .tg .tg-cwv5{background-color:#ffffff;text-align:right;vertical-align:top}
+        .tg .tg-5jn8{font-weight:bold;font-size:large;vertical-align:top}
+        .tg .tg-uj5g{background-color:#e7e5e5;text-align:center;vertical-align:top}
+        .tg .tg-cfx1{background-color:#e7e5e5;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-3gle{font-weight:bold;background-color:#f4e8e8;color:#fe0000;text-align:center;vertical-align:top}
+        .tg .tg-27w5{font-weight:bold;background-color:#e1e5f2;color:#3166ff;text-align:center;vertical-align:top}
+        .tg .tg-km61{background-color:#eeeeee;color:#9b9b9b;text-align:center;vertical-align:top}
+        .tg .tg-2idc{text-decoration:underline;background-color:#ffffff;text-align:center;vertical-align:top}
+        .tg .tg-8nce{background-color:#f4e8e8;text-align:center;vertical-align:top}
+        .tg .tg-42ua{background-color:#e1e5f2;text-align:center;vertical-align:top}
+        .tg .tg-549m{background-color:#eeeeee;text-align:center;vertical-align:top}
+        .tg .tg-i81m{background-color:#ffffff;text-align:center;vertical-align:top}
+        </style>
+        <table class="tg">
+          <tr>
+            <th class="tg-5jn8" colspan="6">Scores with N2 (same as the initial example) - Probability {{ 1|sub:session.config.N1_prob }}</th>
+          </tr>
+          <tr>
+            <td class="tg-cwv5"></td>
+            <td class="tg-3gle">Role A</td>
+            <td class="tg-27w5">Role F</td>
+            <td class="tg-2idc">Total</td>
+          </tr>
+          <tr>
+          {% with F_GE=session.config.GE_Low_F|mul:session.config.F1_F_mult %}
+          {% with GE=session.config.GE_Low_A|add:F_GE %}
+          {% with F_IE=20|sub:F_GE%}
+
+            <td class="tg-cwv5">Group Exchange Contribution:</td>
+            <td class="tg-8nce">{{session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">{{session.config.GE_Low_F}}</td>
+            <td class="tg-i81m">
+            </td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Individual Exchange Contribution:</td>
+            <td class="tg-8nce">{{20|sub:session.config.GE_Low_A}}</td>
+            <td class="tg-42ua">
+                {{20|sub:session.config.GE_Low_F}}</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Fee:</td>
+            <td class="tg-8nce">- {{ session.config.boycott_cost }}</td>
+            <td class="tg-42ua">
+                0</td>
+            <td class="tg-i81m"></td>
+          </tr>
+          <tr>
+            <td class="tg-cwv5">Score:</td>
+            {% if Role_self == 'A' %}<td class="tg-8nce2">{% else %}<td class="tg-8nce">{% endif %}
+            {{session.config.GE_Low_F|add:session.config.GE_Low_A|mul:0.3|sub:-20|sub:session.config.GE_Low_A|sub:10|floatformat:"0"}}
+            </td>
+            {% if Role_self == 'F' %}<td class="tg-42ua2">{% else %}<td class="tg-42ua">{% endif %}
+            {{session.config.GE_Low_F|add:session.config.GE_Low_A|mul:0.3|sub:-20|sub:session.config.GE_Low_F|floatformat:"0"}}</td><!-- Hacked to accommodate nonneg -->
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+            <td class="tg-i81m">{{session.config.GE_Low_F|add:session.config.GE_Low_A|mul:0.3|mul:2|sub:-40|sub:10|sub:session.config.GE_Low_F|sub:session.config.GE_Low_A|floatformat:"0"}}</td><!-- Hacked -->>
+          </tr>
+        </table>
+        <br><br>
+
+
+
+                <li><p><b>In N1 and N2 Role A</b> will pay a 10 point fee.</p>
+            </ul>
+        </li>
+        </ul>
+
+
+
+
+        <br><br><hr>
+        <h4>Final Payment</h4>
+        <p>
+            The final amount you receive at the end of today's session will include the score you received from Part 2 ({{participant.vars.final_score|floatformat:"2"}} points), plus a randomly selected round from the upcoming part of the experiment.
+        </p>
+    </div>
+
+

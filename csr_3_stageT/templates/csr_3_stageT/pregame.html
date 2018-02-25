@@ -1,0 +1,64 @@
+{% extends "global/BaseCSR.html" %}
+{% load staticfiles otree_tags %}
+{% load mathfilters %}
+
+{% block title %}
+    Before we start
+{% endblock %}
+{% block content %}
+<!--     <p>
+        End of  round {{stage_round}} of 5
+    </p> -->
+
+    <p>
+        You are <strong>{% if participant.vars.Role == "A" %}<font color='red'>Role A</font>{% else %}<font color='blue'>Role F</font>{% endif %}</strong>.
+        In Part 2 you contributed on average {{ participant.vars.overall_ge_percent|mul:100|floatformat:"0" }}%.
+    </p>
+
+    <p>
+        Your counterpart is  <strong>{% if participant.vars.Role == "A" %}<font color='blue'>Role F</font>{% else %}<font color='red'>Role A</font>{% endif %}</strong>.
+        In Part 2 they contributed on average {{ revwPg_counter_ge_percent|mul:100|floatformat:"0" }}%.
+    </p>
+
+
+    <p>
+        There are two other members of your group. You will not know about their group exchange contribution or earnings in other rounds, but your decisions will affect their score as passive players. Additionally, you will be matched up with a group as a passive player, and the active players' decisions in those rounds will affect your score as a passive player. 
+    </p>
+    <p>
+        Click next
+    </p>
+
+    <p>
+        <!-- Full Instructions <a href="#" id="hide">Hide</a> - <a href="#" id="show">Show</a> -->
+    </p>
+
+    <p>
+        {% for field in form %}
+            {% formfield field %}
+        {% endfor %}
+    </p>
+
+    {% next_button %}<br><br>
+
+
+ <div id='instrucs' style="display:none">{% include Constants.instructions_template %}</div>
+
+<div></div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#hide").click(function(){
+            $("#instrucs").hide();
+        });
+        $("#show").click(function(){
+            $("#instrucs").show();
+        });
+    });
+    </script>
+{% endblock %}

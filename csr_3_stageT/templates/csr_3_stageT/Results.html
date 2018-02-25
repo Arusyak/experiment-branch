@@ -1,0 +1,77 @@
+{% extends "global/BaseCSR.html" %}
+{% load staticfiles otree_tags %}
+{% load mathfilters %}
+
+{% block title %}
+    Results Round {{ subsession.round_number }} of {{ session.config.stage_round_count }}
+
+{% endblock %}
+{% block content %}
+<!--     <p>
+        End of  round {{stage_round}} of 5
+    </p> -->
+
+    <p>
+        You are <strong>{% if participant.vars.Role == "A" %}<font color='red'>Role A</font>{% else %}<font color='blue'>Role F</font>{% endif %}</strong>.
+    </p>
+    <p>
+        In Part 2 you contributed on average {{ participant.vars.overall_ge_percent|mul:100|floatformat:"0" }}% to the group exchange.
+    </p>
+    <p> 
+        Your counterpart  contributed on average {{ counter_party_overall_ge_percent|floatformat:"2" }}% to the group exchange.
+    </p>
+    <p>
+        You and your counterparty ended up at <b>{{ terminal_choice }}</b>.
+    </p>
+
+
+    <p>
+        <b>Your payoff is {{ self_round_payoff|floatformat:"2" }}</b>.
+    </p>
+    <p>
+        Your counterpart's payoff is {{ counter_party_round_payoff|floatformat:"2" }}.
+    </p>
+    <p>
+        Passive Player 1 received {{passiveplayerearnings|floatformat:"2"}}.
+    </p>
+    <p>
+        Passive Player 2 received {{passiveplayerearnings|floatformat:"2"}}.
+    </p>
+
+    <p>
+        {% for field in form %}
+            {% formfield field %}
+        {% endfor %}
+    </p>
+
+    {% next_button %}
+
+    <p>
+        <br><br>
+        Full Instructions <a href="#" id="hide">Hide</a> - <a href="#" id="show">Show</a>
+    </p>
+
+
+
+
+ <div id='instrucs' style="display:none">{% include Constants.instructions_template %}</div>
+
+<div></div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#hide").click(function(){
+            $("#instrucs").hide();
+        });
+        $("#show").click(function(){
+            $("#instrucs").show();
+        });
+    });
+    </script>
+{% endblock %}

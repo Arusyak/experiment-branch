@@ -1,0 +1,44 @@
+{% extends "global/BaseCSR.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="instructions well well-lg">
+<!--
+    <h3 class="panel-sub-heading">
+        Instructions
+    </h3> -->
+
+    <p>
+        Welcome. You are participating in a study on economic decision making and will be asked to make a number of decisions. For your participation you will receive a show-up fee of Rs. 600. Please read these instructions carefully as they describe how you can earn additional money.
+    </p>
+    <p>
+        During the study your earnings will be expressed in points. Upon completion of the session, your accumulated earnings will be converted from points to INR at a rate of INR 8 per point. Sometimes, your points will consist of decimals, but your total allowance will be rounded up. You will be paid these converted earnings in cash.
+    </p>
+    <p>
+        All interaction between you and other participants takes place through computers. Please do not talk or communicate with other participants in any other way. If you have a question, raise your hand and one of us will help you.
+    </p>
+    <p>
+        Your participation in this study is anonymous. That is, your identity will not be revealed to others and the identity of others will not be revealed to you.
+    </p>
+    <p>
+        This study is divided in three parts. First, we describe the instructions for Part 1. Once Part 1 is concluded, you will receive instructions for Part 2 and Part 3.
+    </p>
+
+
+
+
+</div>
+
+    {% if debug %}
+      In debug mode only,
+      {% next_button %}<br><br><br>
+    {% endif %}
+
+{% endblock %}
