@@ -1,8 +1,6 @@
-otree-core>=1.0.0
-Django==1.8.8 # for heroku, needs to be explicitly in requirements file
-python-psycopg2
+otree
+django-mathfilters
 numpy
 django-filters
-django-mathfilters
 django-filter==0.11.0
 scipy
